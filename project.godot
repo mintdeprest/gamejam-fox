@@ -20,6 +20,8 @@ config/icon="res://icon.svg"
 pushable=""
 hideable=""
 player=""
+climable=""
+ledgeable=""
 
 [input]
 

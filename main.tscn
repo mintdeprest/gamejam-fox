@@ -1,24 +1,52 @@
-[gd_scene load_steps=13 format=3 uid="uid://h2hms21c6y1k"]
+[gd_scene load_steps=21 format=3 uid="uid://h2hms21c6y1k"]
 
 [ext_resource type="Script" uid="uid://dtrpw6syqlnwf" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="Script" uid="uid://1kvc80reexh" path="res://fox.gd" id="1_ig7tw"]
-[ext_resource type="PackedScene" uid="uid://ckundbx1pe8fa" path="res://floor_base.tscn" id="2_1bvp3"]
-[ext_resource type="Texture2D" uid="uid://cbofjhuar5pke" path="res://TRial sprites 2.png" id="4_lquwl"]
-[ext_resource type="Texture2D" uid="uid://b1201cdh5vw0q" path="res://TRial sprites.png" id="5_7mycd"]
-[ext_resource type="Texture2D" uid="uid://cb38w1yabs0s2" path="res://Babe.png" id="6_5vw27"]
-[ext_resource type="Script" uid="uid://bfbg1yealumqs" path="res://bird_shadow.gd" id="6_7mycd"]
-[ext_resource type="PackedScene" uid="uid://c53j8y57ljlc4" path="res://bird.tscn" id="8_5vw27"]
+[ext_resource type="Texture2D" uid="uid://c16m1narymltl" path="res://Babewalk-ezgif.com-gif-to-sprite-converter.png" id="3_7mycd"]
+[ext_resource type="Texture2D" uid="uid://dbar6ls4disll" path="res://background (1).png" id="6_7mycd"]
+[ext_resource type="Texture2D" uid="uid://csfwk3porcqc4" path="res://G1.png" id="7_5vw27"]
+[ext_resource type="AudioStream" uid="uid://biaf1hri04trq" path="res://song for when the owl is NOT killing you.mp3" id="8_5vw27"]
+[ext_resource type="Texture2D" uid="uid://c1esj6wlaqh64" path="res://G2.png" id="8_kek77"]
+[ext_resource type="Texture2D" uid="uid://d0g7dij5rh1a" path="res://G3.png" id="9_4c57u"]
+[ext_resource type="Script" uid="uid://cxhctkndhsyo8" path="res://player_cam.gd" id="9_kek77"]
+[ext_resource type="Texture2D" uid="uid://bkh5m8grqd37d" path="res://G4.png" id="10_efxa6"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h2yge"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_272bh"]
+atlas = ExtResource("3_7mycd")
+region = Rect2(0, 0, 389, 282)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5vw27"]
+atlas = ExtResource("3_7mycd")
+region = Rect2(389, 0, 389, 282)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kek77"]
+atlas = ExtResource("3_7mycd")
+region = Rect2(778, 0, 389, 282)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4c57u"]
+atlas = ExtResource("3_7mycd")
+region = Rect2(1167, 0, 389, 282)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lquwl"]
+atlas = ExtResource("3_7mycd")
+region = Rect2(0, 0, 389, 282)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_272bh"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("4_lquwl")
+"texture": SubResource("AtlasTexture_272bh")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_7mycd")
+"texture": SubResource("AtlasTexture_5vw27")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kek77")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4c57u")
 }],
 "loop": true,
 "name": &"default",
@@ -26,12 +54,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("6_5vw27")
+"texture": SubResource("AtlasTexture_lquwl")
 }],
 "loop": true,
 "name": &"idle",
 "speed": 5.0
 }]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5vw27"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ig7tw"]
 
@@ -40,12 +70,9 @@ animations = [{
 [node name="main" type="Node2D"]
 script = ExtResource("1_h2yge")
 
-[node name="floor_base" parent="." instance=ExtResource("2_1bvp3")]
-visible = false
-position = Vector2(-101, 192)
-
 [node name="fox" type="CharacterBody2D" parent="." groups=["player"]]
-position = Vector2(295, 409)
+z_index = 1
+position = Vector2(-538, 502)
 script = ExtResource("1_ig7tw")
 metadata/_edit_group_ = true
 
@@ -54,17 +81,30 @@ rotation = 1.5708
 shape = SubResource("CapsuleShape2D_h2yge")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="fox"]
-position = Vector2(-8, -18)
+position = Vector2(-3, -4)
 scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_272bh")
 animation = &"idle"
+frame_progress = 0.932253
 
 [node name="RayCast2D" type="RayCast2D" parent="fox"]
 target_position = Vector2(25, 0)
 collision_mask = 2
 
+[node name="ledgeCast" type="RayCast2D" parent="fox"]
+position = Vector2(0, -8)
+target_position = Vector2(40, 0)
+collision_mask = 2
+
+[node name="interaction_range" type="Area2D" parent="fox"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="fox/interaction_range"]
+rotation = 1.5708
+scale = Vector2(2, 2)
+shape = SubResource("CapsuleShape2D_5vw27")
+
 [node name="pushable_object" type="RigidBody2D" parent="." groups=["pushable"]]
-position = Vector2(272, 532)
+position = Vector2(533, 478)
 collision_layer = 3
 collision_mask = 3
 mass = 10.0
@@ -81,15 +121,15 @@ offset_bottom = 10.0
 color = Color(0.48, 0.35136, 0.1584, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="Area2D" type="Area2D" parent="." groups=["hideable"]]
-position = Vector2(328, 579)
+[node name="bush" type="Area2D" parent="." groups=["hideable"]]
+position = Vector2(615, 530)
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bush" groups=["hideable"]]
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_1bvp3")
 
-[node name="ColorRect" type="ColorRect" parent="Area2D"]
+[node name="ColorRect" type="ColorRect" parent="bush"]
 offset_left = -15.0
 offset_top = -10.0
 offset_right = 15.0
@@ -97,21 +137,79 @@ offset_bottom = 10.0
 color = Color(0.286275, 0.564706, 0.309804, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="bird_shadow" type="Node2D" parent="."]
-script = ExtResource("6_7mycd")
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_5vw27")
+volume_db = -10.0
+autoplay = true
+parameters/looping = true
 
-[node name="RayCast2D" type="RayCast2D" parent="bird_shadow"]
-target_position = Vector2(0, 625)
+[node name="playerCam" type="Camera2D" parent="."]
+script = ExtResource("9_kek77")
 
-[node name="ColorRect" type="ColorRect" parent="bird_shadow"]
-offset_left = -19.0
-offset_top = 572.0
-offset_right = 21.0
-offset_bottom = 595.0
-color = Color(0, 0, 0, 0.360784)
+[node name="Node2D" type="Node2D" parent="playerCam"]
+z_index = 4
 
-[node name="bird" parent="bird_shadow" instance=ExtResource("8_5vw27")]
-position = Vector2(39, -71)
+[node name="Sprite2D" type="Sprite2D" parent="playerCam/Node2D"]
+z_index = -10
+position = Vector2(-2, -1.5)
+texture = ExtResource("6_7mycd")
 
-[connection signal="body_entered" from="Area2D" to="fox" method="_on_area_2d_body_entered"]
-[connection signal="body_exited" from="Area2D" to="fox" method="_on_area_2d_body_exited"]
+[node name="foreground_1" type="Sprite2D" parent="playerCam/Node2D"]
+modulate = Color(0.4, 0.4, 0.4, 1)
+position = Vector2(-678, 217.5)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("7_5vw27")
+
+[node name="foreground_8" type="Sprite2D" parent="playerCam/Node2D"]
+modulate = Color(0.4, 0.4, 0.4, 1)
+position = Vector2(401, 277)
+rotation = -0.660503
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("7_5vw27")
+flip_h = true
+
+[node name="foreground_3" type="Sprite2D" parent="playerCam/Node2D"]
+modulate = Color(0.4, 0.4, 0.4, 1)
+position = Vector2(-184, 215)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("9_4c57u")
+
+[node name="foreground_2" type="Sprite2D" parent="playerCam/Node2D"]
+modulate = Color(0.4, 0.4, 0.4, 1)
+position = Vector2(629, 223)
+rotation = -0.266016
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("8_kek77")
+
+[node name="foreground_4" type="Sprite2D" parent="playerCam/Node2D"]
+modulate = Color(0.4, 0.4, 0.4, 1)
+position = Vector2(695, 271.5)
+rotation = 0.0635255
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("10_efxa6")
+flip_h = true
+
+[node name="foreground_6" type="Sprite2D" parent="playerCam/Node2D"]
+modulate = Color(0.4, 0.4, 0.4, 1)
+position = Vector2(-509.843, 230.157)
+rotation = 0.286281
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("8_kek77")
+
+[node name="foreground_7" type="Sprite2D" parent="playerCam/Node2D"]
+modulate = Color(0.4, 0.4, 0.4, 1)
+position = Vector2(-443.843, 278.657)
+rotation = 0.615823
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("10_efxa6")
+flip_h = true
+
+[node name="foreground_5" type="Sprite2D" parent="playerCam/Node2D"]
+modulate = Color(0.4, 0.4, 0.4, 1)
+position = Vector2(-53, 260)
+rotation = 1.02242
+scale = Vector2(0.352143, 0.352143)
+texture = ExtResource("10_efxa6")
+
+[connection signal="area_entered" from="fox/interaction_range" to="fox" method="_on_interaction_range_area_entered"]
+[connection signal="area_exited" from="fox/interaction_range" to="fox" method="_on_interaction_range_area_exited"]

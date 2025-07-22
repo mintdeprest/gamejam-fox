@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://biaf1hri04trq"
+path="res://.godot/imported/song for when the owl is NOT killing you.mp3-65619f4fa3981bad53af62b33a68bb85.mp3str"
+
+[deps]
+
+source_file="res://song for when the owl is NOT killing you.mp3"
+dest_files=["res://.godot/imported/song for when the owl is NOT killing you.mp3-65619f4fa3981bad53af62b33a68bb85.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
