@@ -5,6 +5,9 @@ const LEFT_BOUND = 100
 const RIGHT_BOUND = 700       
 
 var direction = 1          
+var bird_spawn = preload("res://bird.tscn")
+var attacking = false
+
 
 func _process(delta):
 
@@ -18,10 +21,16 @@ func _process(delta):
 		position.x = RIGHT_BOUND
 		direction = -1
 
-
-	var ray = $RayCast2D
-	if ray.is_colliding():
-		var hit = ray.get_collider()
-		if hit.is_in_group("player"):
-			print("Hit player")
-			
+	if !attacking:
+		var ray = $RayCast2D
+		if ray.is_colliding():
+			var hit = ray.get_collider()
+			if hit.is_in_group("player"):
+				print("aaaaa")
+				var attack_bird = bird_spawn.instantiate()
+				add_sibling(attack_bird)
+				attack_bird.initialize(hit)
+				attack_bird.position = position
+				attacking = true
+				
+		

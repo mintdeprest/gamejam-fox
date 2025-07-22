@@ -5,7 +5,7 @@ const GRAVITY = 1000
 const JUMP_VELOCITY = -400
 const COOLDOWN_TIMER = 0.2
 const PUSH_FORCE = 1500
-const MAX_POUNCE_CHARGE = 1.0  # Max seconds to fully charge
+const MAX_POUNCE_CHARGE = 1.0
 const MIN_POUNCE_FORCE = -400
 const MAX_POUNCE_FORCE = -700
 const SHORT_PRESS_THRESHOLD = 0.15
@@ -17,7 +17,9 @@ var is_charging_pounce = false
 var pounce_charge = 0.0
 
 @onready var sprite = get_child(1)
+@onready var collision_block = get_child(0)
 @onready var ray = $RayCast2D
+
 
 
 var time_since_ground = 0.0
@@ -27,14 +29,16 @@ func _physics_process(delta):
 	var input_direction = Input.get_axis("left", "right")
 	velocity.x = move_toward(velocity.x, input_direction * SPEED, 20.0)
 	
+	if hiding:
+		velocity = Vector2.ZERO
 	
 	if input_direction != 0:
 		ray.scale.x = sign(input_direction)
 		sprite.play("default")
 		sprite.flip_h = input_direction < 0
 	else:
+		sprite.play("idle")
 		sprite.pause()
-		sprite.frame = 1
 
 
 	# collision checks
@@ -54,7 +58,7 @@ func _physics_process(delta):
 
 		# jump charge
 		if Input.is_action_pressed("jump"):
-			# Begin or continue charging
+	
 			is_charging_pounce = true
 			pounce_charge = clamp(pounce_charge + delta, 0.0, MAX_POUNCE_CHARGE)
 
@@ -76,10 +80,13 @@ func _physics_process(delta):
 		if input_direction != 0:
 			hiding = false
 			sprite.visible = true
+			collision_block.disabled = false
+			position.y -= 5.0
 
 	if can_hide:
 		if Input.is_action_just_pressed("down"):
 			sprite.visible = false
+			collision_block.disabled = true
 			hiding = true
 
 

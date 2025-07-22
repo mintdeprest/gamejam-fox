@@ -1,11 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://h2hms21c6y1k"]
+[gd_scene load_steps=13 format=3 uid="uid://h2hms21c6y1k"]
 
 [ext_resource type="Script" uid="uid://dtrpw6syqlnwf" path="res://main.gd" id="1_h2yge"]
-[ext_resource type="Script" uid="uid://1kvc80reexh" path="res://character_body_2d.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://1kvc80reexh" path="res://fox.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://ckundbx1pe8fa" path="res://floor_base.tscn" id="2_1bvp3"]
 [ext_resource type="Texture2D" uid="uid://cbofjhuar5pke" path="res://TRial sprites 2.png" id="4_lquwl"]
 [ext_resource type="Texture2D" uid="uid://b1201cdh5vw0q" path="res://TRial sprites.png" id="5_7mycd"]
+[ext_resource type="Texture2D" uid="uid://cb38w1yabs0s2" path="res://Babe.png" id="6_5vw27"]
 [ext_resource type="Script" uid="uid://bfbg1yealumqs" path="res://bird_shadow.gd" id="6_7mycd"]
+[ext_resource type="PackedScene" uid="uid://c53j8y57ljlc4" path="res://bird.tscn" id="8_5vw27"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h2yge"]
 
@@ -21,6 +23,14 @@ animations = [{
 "loop": true,
 "name": &"default",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_5vw27")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ig7tw"]
@@ -34,22 +44,22 @@ script = ExtResource("1_h2yge")
 visible = false
 position = Vector2(-101, 192)
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="." groups=["player"]]
+[node name="fox" type="CharacterBody2D" parent="." groups=["player"]]
 position = Vector2(295, 409)
 script = ExtResource("1_ig7tw")
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="fox"]
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_h2yge")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="fox"]
 position = Vector2(-8, -18)
 scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_272bh")
-frame_progress = 0.0382365
+animation = &"idle"
 
-[node name="RayCast2D" type="RayCast2D" parent="CharacterBody2D"]
+[node name="RayCast2D" type="RayCast2D" parent="fox"]
 target_position = Vector2(25, 0)
 collision_mask = 2
 
@@ -93,5 +103,15 @@ script = ExtResource("6_7mycd")
 [node name="RayCast2D" type="RayCast2D" parent="bird_shadow"]
 target_position = Vector2(0, 625)
 
-[connection signal="body_entered" from="Area2D" to="CharacterBody2D" method="_on_area_2d_body_entered"]
-[connection signal="body_exited" from="Area2D" to="CharacterBody2D" method="_on_area_2d_body_exited"]
+[node name="ColorRect" type="ColorRect" parent="bird_shadow"]
+offset_left = -19.0
+offset_top = 572.0
+offset_right = 21.0
+offset_bottom = 595.0
+color = Color(0, 0, 0, 0.360784)
+
+[node name="bird" parent="bird_shadow" instance=ExtResource("8_5vw27")]
+position = Vector2(39, -71)
+
+[connection signal="body_entered" from="Area2D" to="fox" method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="fox" method="_on_area_2d_body_exited"]
